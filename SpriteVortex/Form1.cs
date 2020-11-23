@@ -104,7 +104,7 @@ namespace SpriteVortex
                     using (var g = Graphics.FromImage(bitmap))
                     {
                         g.DrawImage((Bitmap)originalImage.Clone(), 0, 0, section, GraphicsUnit.Pixel);
-                        slicedImages.Add(bitmap);
+                        if (!IsTransparent(bitmap)) slicedImages.Add(bitmap);
                     }
                 }
             }
@@ -466,6 +466,23 @@ namespace SpriteVortex
             {
                 animationTimer.Interval = 1000 / 30;
             }
+        }
+
+        bool IsTransparent(Bitmap image)
+        {
+            bool fullTransparent = true;
+
+            for (int y = 0; y < image.Height; ++y)
+            {
+                for (int x = 0; x < image.Width; ++x)
+                {
+                    if (image.GetPixel(x, y).A > 0)
+                    {
+                        fullTransparent = false;
+                    }
+                }
+            }
+            return fullTransparent;
         }
     }
 }
