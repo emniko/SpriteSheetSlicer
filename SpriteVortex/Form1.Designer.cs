@@ -28,8 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.sidePanel = new System.Windows.Forms.Panel();
+            this.saveAllButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.renameBox = new System.Windows.Forms.TextBox();
             this.displayBox = new System.Windows.Forms.PictureBox();
             this.btn_Slice = new System.Windows.Forms.Button();
             this.lab_VerticalImages = new System.Windows.Forms.Label();
@@ -43,9 +47,14 @@
             this.sheetDialog = new System.Windows.Forms.OpenFileDialog();
             this.imagePanel = new System.Windows.Forms.Panel();
             this.imageSliderPanel = new MetroFramework.Controls.MetroPanel();
-            this.renameBox = new System.Windows.Forms.TextBox();
-            this.saveButton = new System.Windows.Forms.Button();
-            this.saveAllButton = new System.Windows.Forms.Button();
+            this.backwardButton = new System.Windows.Forms.Button();
+            this.playPauseButton = new System.Windows.Forms.Button();
+            this.stopButton = new System.Windows.Forms.Button();
+            this.forwardButton = new System.Windows.Forms.Button();
+            this.animationTimer = new System.Windows.Forms.Timer(this.components);
+            this.lab_FPS = new System.Windows.Forms.Label();
+            this.radio30 = new System.Windows.Forms.RadioButton();
+            this.radio60 = new System.Windows.Forms.RadioButton();
             this.sidePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.displayBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sheetBox)).BeginInit();
@@ -56,6 +65,13 @@
             // sidePanel
             // 
             this.sidePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(62)))));
+            this.sidePanel.Controls.Add(this.radio60);
+            this.sidePanel.Controls.Add(this.radio30);
+            this.sidePanel.Controls.Add(this.lab_FPS);
+            this.sidePanel.Controls.Add(this.forwardButton);
+            this.sidePanel.Controls.Add(this.stopButton);
+            this.sidePanel.Controls.Add(this.playPauseButton);
+            this.sidePanel.Controls.Add(this.backwardButton);
             this.sidePanel.Controls.Add(this.saveAllButton);
             this.sidePanel.Controls.Add(this.saveButton);
             this.sidePanel.Controls.Add(this.renameBox);
@@ -72,13 +88,62 @@
             this.sidePanel.Size = new System.Drawing.Size(320, 681);
             this.sidePanel.TabIndex = 0;
             // 
+            // saveAllButton
+            // 
+            this.saveAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.saveAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(43)))), ((int)(((byte)(48)))));
+            this.saveAllButton.Enabled = false;
+            this.saveAllButton.FlatAppearance.BorderSize = 0;
+            this.saveAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveAllButton.Font = new System.Drawing.Font("Futura Round Demi", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveAllButton.ForeColor = System.Drawing.Color.White;
+            this.saveAllButton.Location = new System.Drawing.Point(164, 628);
+            this.saveAllButton.Name = "saveAllButton";
+            this.saveAllButton.Size = new System.Drawing.Size(137, 33);
+            this.saveAllButton.TabIndex = 9;
+            this.saveAllButton.Text = "Save All";
+            this.saveAllButton.UseVisualStyleBackColor = false;
+            this.saveAllButton.Click += new System.EventHandler(this.saveAllButton_Click);
+            // 
+            // saveButton
+            // 
+            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.saveButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(43)))), ((int)(((byte)(48)))));
+            this.saveButton.Enabled = false;
+            this.saveButton.FlatAppearance.BorderSize = 0;
+            this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.saveButton.Font = new System.Drawing.Font("Futura Round Demi", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.saveButton.ForeColor = System.Drawing.Color.White;
+            this.saveButton.Location = new System.Drawing.Point(19, 628);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(137, 33);
+            this.saveButton.TabIndex = 8;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = false;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
+            // renameBox
+            // 
+            this.renameBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.renameBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(62)))));
+            this.renameBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.renameBox.Enabled = false;
+            this.renameBox.Font = new System.Drawing.Font("Futura Round", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.renameBox.ForeColor = System.Drawing.Color.White;
+            this.renameBox.Location = new System.Drawing.Point(15, 496);
+            this.renameBox.Name = "renameBox";
+            this.renameBox.Size = new System.Drawing.Size(290, 18);
+            this.renameBox.TabIndex = 7;
+            this.renameBox.Text = "[Image Name]";
+            this.renameBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // displayBox
             // 
             this.displayBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.displayBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.displayBox.Image = ((System.Drawing.Image)(resources.GetObject("displayBox.Image")));
             this.displayBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("displayBox.InitialImage")));
-            this.displayBox.Location = new System.Drawing.Point(15, 219);
+            this.displayBox.Location = new System.Drawing.Point(15, 199);
             this.displayBox.Name = "displayBox";
             this.displayBox.Size = new System.Drawing.Size(290, 290);
             this.displayBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -93,7 +158,7 @@
             this.btn_Slice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Slice.Font = new System.Drawing.Font("Futura Round Demi", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Slice.ForeColor = System.Drawing.Color.White;
-            this.btn_Slice.Location = new System.Drawing.Point(142, 169);
+            this.btn_Slice.Location = new System.Drawing.Point(142, 149);
             this.btn_Slice.Name = "btn_Slice";
             this.btn_Slice.Size = new System.Drawing.Size(166, 33);
             this.btn_Slice.TabIndex = 5;
@@ -106,7 +171,7 @@
             this.lab_VerticalImages.AutoSize = true;
             this.lab_VerticalImages.Font = new System.Drawing.Font("Futura Round", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lab_VerticalImages.ForeColor = System.Drawing.Color.White;
-            this.lab_VerticalImages.Location = new System.Drawing.Point(33, 126);
+            this.lab_VerticalImages.Location = new System.Drawing.Point(33, 106);
             this.lab_VerticalImages.Name = "lab_VerticalImages";
             this.lab_VerticalImages.Size = new System.Drawing.Size(103, 18);
             this.lab_VerticalImages.TabIndex = 4;
@@ -119,7 +184,7 @@
             this.txt_verticalImages.Enabled = false;
             this.txt_verticalImages.Font = new System.Drawing.Font("Futura Round", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_verticalImages.ForeColor = System.Drawing.Color.White;
-            this.txt_verticalImages.Location = new System.Drawing.Point(142, 124);
+            this.txt_verticalImages.Location = new System.Drawing.Point(142, 104);
             this.txt_verticalImages.MaxLength = 2;
             this.txt_verticalImages.Name = "txt_verticalImages";
             this.txt_verticalImages.Size = new System.Drawing.Size(166, 29);
@@ -133,7 +198,7 @@
             this.lab_horizontalImages.AutoSize = true;
             this.lab_horizontalImages.Font = new System.Drawing.Font("Futura Round", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lab_horizontalImages.ForeColor = System.Drawing.Color.White;
-            this.lab_horizontalImages.Location = new System.Drawing.Point(15, 81);
+            this.lab_horizontalImages.Location = new System.Drawing.Point(15, 61);
             this.lab_horizontalImages.Name = "lab_horizontalImages";
             this.lab_horizontalImages.Size = new System.Drawing.Size(121, 18);
             this.lab_horizontalImages.TabIndex = 2;
@@ -146,7 +211,7 @@
             this.txt_horizontalImages.Enabled = false;
             this.txt_horizontalImages.Font = new System.Drawing.Font("Futura Round", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_horizontalImages.ForeColor = System.Drawing.Color.White;
-            this.txt_horizontalImages.Location = new System.Drawing.Point(142, 79);
+            this.txt_horizontalImages.Location = new System.Drawing.Point(142, 59);
             this.txt_horizontalImages.MaxLength = 2;
             this.txt_horizontalImages.Name = "txt_horizontalImages";
             this.txt_horizontalImages.Size = new System.Drawing.Size(166, 29);
@@ -248,54 +313,121 @@
             this.imageSliderPanel.VerticalScrollbarHighlightOnWheel = false;
             this.imageSliderPanel.VerticalScrollbarSize = 10;
             // 
-            // renameBox
+            // backwardButton
             // 
-            this.renameBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.renameBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(62)))));
-            this.renameBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.renameBox.Enabled = false;
-            this.renameBox.Font = new System.Drawing.Font("Futura Round", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.renameBox.ForeColor = System.Drawing.Color.White;
-            this.renameBox.Location = new System.Drawing.Point(15, 516);
-            this.renameBox.Name = "renameBox";
-            this.renameBox.Size = new System.Drawing.Size(290, 18);
-            this.renameBox.TabIndex = 7;
-            this.renameBox.Text = "[Image Name]";
-            this.renameBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.backwardButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.backwardButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(43)))), ((int)(((byte)(48)))));
+            this.backwardButton.Enabled = false;
+            this.backwardButton.FlatAppearance.BorderSize = 0;
+            this.backwardButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.backwardButton.Font = new System.Drawing.Font("Futura Round Demi", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.backwardButton.ForeColor = System.Drawing.Color.White;
+            this.backwardButton.Location = new System.Drawing.Point(17, 531);
+            this.backwardButton.Name = "backwardButton";
+            this.backwardButton.Size = new System.Drawing.Size(68, 33);
+            this.backwardButton.TabIndex = 10;
+            this.backwardButton.Text = "Back";
+            this.backwardButton.UseVisualStyleBackColor = false;
+            this.backwardButton.Click += new System.EventHandler(this.backwardButton_Click);
             // 
-            // saveButton
+            // playPauseButton
             // 
-            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.saveButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(43)))), ((int)(((byte)(48)))));
-            this.saveButton.Enabled = false;
-            this.saveButton.FlatAppearance.BorderSize = 0;
-            this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.saveButton.Font = new System.Drawing.Font("Futura Round Demi", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveButton.ForeColor = System.Drawing.Color.White;
-            this.saveButton.Location = new System.Drawing.Point(19, 628);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(137, 33);
-            this.saveButton.TabIndex = 8;
-            this.saveButton.Text = "Save";
-            this.saveButton.UseVisualStyleBackColor = false;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            this.playPauseButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.playPauseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(43)))), ((int)(((byte)(48)))));
+            this.playPauseButton.Enabled = false;
+            this.playPauseButton.FlatAppearance.BorderSize = 0;
+            this.playPauseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.playPauseButton.Font = new System.Drawing.Font("Futura Round Demi", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.playPauseButton.ForeColor = System.Drawing.Color.White;
+            this.playPauseButton.Location = new System.Drawing.Point(91, 531);
+            this.playPauseButton.Name = "playPauseButton";
+            this.playPauseButton.Size = new System.Drawing.Size(68, 33);
+            this.playPauseButton.TabIndex = 11;
+            this.playPauseButton.Text = "Play";
+            this.playPauseButton.UseVisualStyleBackColor = false;
+            this.playPauseButton.Click += new System.EventHandler(this.playPauseButton_Click);
             // 
-            // saveAllButton
+            // stopButton
             // 
-            this.saveAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.saveAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(43)))), ((int)(((byte)(48)))));
-            this.saveAllButton.Enabled = false;
-            this.saveAllButton.FlatAppearance.BorderSize = 0;
-            this.saveAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.saveAllButton.Font = new System.Drawing.Font("Futura Round Demi", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.saveAllButton.ForeColor = System.Drawing.Color.White;
-            this.saveAllButton.Location = new System.Drawing.Point(164, 628);
-            this.saveAllButton.Name = "saveAllButton";
-            this.saveAllButton.Size = new System.Drawing.Size(137, 33);
-            this.saveAllButton.TabIndex = 9;
-            this.saveAllButton.Text = "Save All";
-            this.saveAllButton.UseVisualStyleBackColor = false;
-            this.saveAllButton.Click += new System.EventHandler(this.saveAllButton_Click);
+            this.stopButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.stopButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(43)))), ((int)(((byte)(48)))));
+            this.stopButton.Enabled = false;
+            this.stopButton.FlatAppearance.BorderSize = 0;
+            this.stopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.stopButton.Font = new System.Drawing.Font("Futura Round Demi", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stopButton.ForeColor = System.Drawing.Color.White;
+            this.stopButton.Location = new System.Drawing.Point(165, 531);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(68, 33);
+            this.stopButton.TabIndex = 12;
+            this.stopButton.Text = "Stop";
+            this.stopButton.UseVisualStyleBackColor = false;
+            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+            // 
+            // forwardButton
+            // 
+            this.forwardButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.forwardButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(43)))), ((int)(((byte)(48)))));
+            this.forwardButton.Enabled = false;
+            this.forwardButton.FlatAppearance.BorderSize = 0;
+            this.forwardButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.forwardButton.Font = new System.Drawing.Font("Futura Round Demi", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.forwardButton.ForeColor = System.Drawing.Color.White;
+            this.forwardButton.Location = new System.Drawing.Point(239, 531);
+            this.forwardButton.Name = "forwardButton";
+            this.forwardButton.Size = new System.Drawing.Size(68, 33);
+            this.forwardButton.TabIndex = 13;
+            this.forwardButton.Text = "Next";
+            this.forwardButton.UseVisualStyleBackColor = false;
+            this.forwardButton.Click += new System.EventHandler(this.forwardButton_Click);
+            // 
+            // animationTimer
+            // 
+            this.animationTimer.Interval = 16;
+            this.animationTimer.Tick += new System.EventHandler(this.animationTimer_Tick);
+            // 
+            // lab_FPS
+            // 
+            this.lab_FPS.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lab_FPS.AutoSize = true;
+            this.lab_FPS.Font = new System.Drawing.Font("Futura Round", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lab_FPS.ForeColor = System.Drawing.Color.White;
+            this.lab_FPS.Location = new System.Drawing.Point(43, 588);
+            this.lab_FPS.Name = "lab_FPS";
+            this.lab_FPS.Size = new System.Drawing.Size(128, 18);
+            this.lab_FPS.TabIndex = 14;
+            this.lab_FPS.Text = "Frames Per Second";
+            // 
+            // radio30
+            // 
+            this.radio30.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.radio30.AutoSize = true;
+            this.radio30.Enabled = false;
+            this.radio30.Font = new System.Drawing.Font("Futura Round", 12F);
+            this.radio30.ForeColor = System.Drawing.Color.White;
+            this.radio30.Location = new System.Drawing.Point(180, 586);
+            this.radio30.Name = "radio30";
+            this.radio30.Size = new System.Drawing.Size(44, 22);
+            this.radio30.TabIndex = 15;
+            this.radio30.Text = "30";
+            this.radio30.UseVisualStyleBackColor = true;
+            // 
+            // radio60
+            // 
+            this.radio60.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.radio60.AutoSize = true;
+            this.radio60.Checked = true;
+            this.radio60.Enabled = false;
+            this.radio60.Font = new System.Drawing.Font("Futura Round", 12F);
+            this.radio60.ForeColor = System.Drawing.Color.White;
+            this.radio60.Location = new System.Drawing.Point(230, 586);
+            this.radio60.Name = "radio60";
+            this.radio60.Size = new System.Drawing.Size(44, 22);
+            this.radio60.TabIndex = 16;
+            this.radio60.TabStop = true;
+            this.radio60.Text = "60";
+            this.radio60.UseVisualStyleBackColor = true;
+            this.radio60.CheckedChanged += new System.EventHandler(this.radio60_CheckedChanged);
             // 
             // Form1
             // 
@@ -339,6 +471,14 @@
         private System.Windows.Forms.TextBox renameBox;
         private System.Windows.Forms.Button saveAllButton;
         private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Button forwardButton;
+        private System.Windows.Forms.Button stopButton;
+        private System.Windows.Forms.Button playPauseButton;
+        private System.Windows.Forms.Button backwardButton;
+        private System.Windows.Forms.Timer animationTimer;
+        private System.Windows.Forms.RadioButton radio60;
+        private System.Windows.Forms.RadioButton radio30;
+        private System.Windows.Forms.Label lab_FPS;
     }
 }
 

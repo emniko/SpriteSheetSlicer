@@ -15,6 +15,8 @@ namespace SpriteVortex
 {
     public partial class Form1 : Form
     {
+        int selectedIndex;
+        bool animation = false;
         PictureBox selectedBox;
         Bitmap originalImage;
         List<Bitmap> slicedImages;
@@ -40,6 +42,8 @@ namespace SpriteVortex
 
         private void btn_Browse_Click(object sender, EventArgs e)
         {
+            StopAnimation();
+
             if (sheetDialog.ShowDialog() == DialogResult.OK)
             {
                 if (imageSliderPanel.Controls.Count > 0)
@@ -67,6 +71,13 @@ namespace SpriteVortex
             renameBox.Text = "[Image Name]";
             saveAllButton.Enabled = false;
             saveButton.Enabled = false;
+            forwardButton.Enabled = false;
+            backwardButton.Enabled = false;
+            playPauseButton.Enabled = false;
+            playPauseButton.Text = "Play";
+            stopButton.Enabled = false;
+            radio30.Enabled = false;
+            radio60.Enabled = false;
             txt_horizontalImages.Text = txt_verticalImages.Text = "0";
             fileName = sheetDialog.FileName.Substring(sheetDialog.FileName.LastIndexOf('\\') + 1);
             originalImage = (Bitmap)Image.FromFile(sheetDialog.FileName);
@@ -166,12 +177,13 @@ namespace SpriteVortex
 
         private void btn_Slice_Click(object sender, EventArgs e)
         {
+            StopAnimation();
+
             imageSliderPanel.Controls.Clear();
             slicedImages.Clear();
             slicedImages = Slice();
             for (int i = 0; i < slicedImages.Count; i++)
             {
-                //slicedImages[i].Save(Application.StartupPath + @"\Data\" + fileName + "_" + (i + 1) + ".png", System.Drawing.Imaging.ImageFormat.Png);
                 PictureBox spriteBox = new PictureBox();
                 spriteBox.Size = new Size(100, 100);
                 spriteBox.Location = new Point((10 * (i + 1)) + (100 * i), 10);
@@ -187,6 +199,7 @@ namespace SpriteVortex
                 {
                     box.BorderStyle = BorderStyle.FixedSingle;
                     selectedBox = box;
+                    selectedIndex = 0;
                     break;
                 }
             }
@@ -195,10 +208,17 @@ namespace SpriteVortex
             renameBox.Text = selectedBox.Tag.ToString();
             saveButton.Enabled = true;
             saveAllButton.Enabled = true;
+            forwardButton.Enabled = true;
+            backwardButton.Enabled = true;
+            playPauseButton.Enabled = true;
+            radio30.Enabled = true;
+            radio60.Enabled = true;
         }
 
         private void SpriteBox_Click(object sender, EventArgs e)
         {
+            StopAnimation();
+
             var spriteBox = sender as PictureBox;
             foreach (PictureBox box in imageSliderPanel.Controls)
             {
@@ -210,12 +230,15 @@ namespace SpriteVortex
             }
             spriteBox.BorderStyle = BorderStyle.FixedSingle;
             selectedBox = spriteBox;
+            selectedIndex = imageSliderPanel.Controls.IndexOf(selectedBox);
             displayBox.Image = selectedBox.Image;
             renameBox.Text = selectedBox.Tag.ToString();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
         {
+            StopAnimation();
+
             SaveFileDialog saveSpriteDialog = new SaveFileDialog();
             saveSpriteDialog.Title = "Save Sprite As";
             saveSpriteDialog.CheckPathExists = true;
@@ -243,6 +266,8 @@ namespace SpriteVortex
 
         private void saveAllButton_Click(object sender, EventArgs e)
         {
+            StopAnimation();
+
             SaveFileDialog saveSpriteDialog = new SaveFileDialog();
             saveSpriteDialog.Title = "Save All Sprites As";
             saveSpriteDialog.CheckPathExists = true;
@@ -255,7 +280,7 @@ namespace SpriteVortex
             {
                 string savePath = Path.GetDirectoryName(saveSpriteDialog.FileName);
 
-                for (int i = 0; i < imageSliderPanel.Controls.Count; i++) 
+                for (int i = 0; i < imageSliderPanel.Controls.Count; i++)
                 {
                     if (saveSpriteDialog.FilterIndex == 1)
                     {
@@ -263,7 +288,7 @@ namespace SpriteVortex
                     }
                     else if (saveSpriteDialog.FilterIndex == 2)
                     {
-                        
+
                     }
                     else if (saveSpriteDialog.FilterIndex == 3)
                     {
@@ -271,9 +296,160 @@ namespace SpriteVortex
                     }
                     else if (saveSpriteDialog.FilterIndex == 4)
                     {
-                        displayBox.Image.Save(savePath + "\\" + fileName.Substring(0, fileName.IndexOf('.')) + "_" + (i+1) + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                        displayBox.Image.Save(savePath + "\\" + fileName.Substring(0, fileName.IndexOf('.')) + "_" + (i + 1) + ".png", System.Drawing.Imaging.ImageFormat.Png);
                     }
                 }
+            }
+        }
+
+        private void StopAnimation()
+        {
+            if (animation)
+            {
+                animation = false;
+                playPauseButton.Text = "Play";
+                stopButton.Enabled = false;
+            }
+        }
+
+        private void forwardButton_Click(object sender, EventArgs e)
+        {
+            StopAnimation();
+
+            foreach (PictureBox box in imageSliderPanel.Controls)
+            {
+                if (box.BorderStyle == BorderStyle.FixedSingle)
+                {
+                    box.BorderStyle = BorderStyle.None;
+                    break;
+                }
+            }
+
+            if (selectedIndex + 1 < imageSliderPanel.Controls.Count)
+            {
+                selectedIndex++;
+            }
+            else 
+            {
+                selectedIndex = 0;
+            }
+
+            var selectedBox = imageSliderPanel.Controls[selectedIndex] as PictureBox;
+            selectedBox.BorderStyle = BorderStyle.FixedSingle;
+            displayBox.Image = selectedBox.Image;
+            renameBox.Text = selectedBox.Tag.ToString();
+        }
+
+        private void backwardButton_Click(object sender, EventArgs e)
+        {
+            StopAnimation();
+
+            foreach (PictureBox box in imageSliderPanel.Controls)
+            {
+                if (box.BorderStyle == BorderStyle.FixedSingle)
+                {
+                    box.BorderStyle = BorderStyle.None;
+                    break;
+                }
+            }
+
+            if (selectedIndex - 1 >= 0)
+            {
+                selectedIndex--;
+            }
+            else
+            {
+                selectedIndex = imageSliderPanel.Controls.Count - 1;
+            }
+
+            var selectedBox = imageSliderPanel.Controls[selectedIndex] as PictureBox;
+            selectedBox.BorderStyle = BorderStyle.FixedSingle;
+            displayBox.Image = selectedBox.Image;
+            renameBox.Text = selectedBox.Tag.ToString();
+        }
+
+        private void playPauseButton_Click(object sender, EventArgs e)
+        {
+            if (animation)
+            {
+                animation = false;
+                playPauseButton.Text = "Play";
+                stopButton.Enabled = false;
+            }
+            else 
+            {
+                animation = true;
+                playPauseButton.Text = "Pause";
+                stopButton.Enabled = true;
+                animationTimer.Enabled = true;
+            }
+        }
+
+        private void stopButton_Click(object sender, EventArgs e)
+        {
+            animation = false;
+            playPauseButton.Text = "Play";
+
+            foreach (PictureBox box in imageSliderPanel.Controls)
+            {
+                if (box.BorderStyle == BorderStyle.FixedSingle)
+                {
+                    box.BorderStyle = BorderStyle.None;
+                    break;
+                }
+            }
+
+            var selectedBox = imageSliderPanel.Controls[0] as PictureBox;
+            selectedBox.BorderStyle = BorderStyle.FixedSingle;
+            displayBox.Image = selectedBox.Image;
+            renameBox.Text = selectedBox.Tag.ToString();
+
+            stopButton.Enabled = false;
+        }
+
+        private void animationTimer_Tick(object sender, EventArgs e)
+        {
+            if (animation)
+            {
+                foreach (PictureBox box in imageSliderPanel.Controls)
+                {
+                    if (box.BorderStyle == BorderStyle.FixedSingle)
+                    {
+                        box.BorderStyle = BorderStyle.None;
+                        break;
+                    }
+                }
+
+                if (selectedIndex + 1 < imageSliderPanel.Controls.Count)
+                {
+                    selectedIndex++;
+                }
+                else
+                {
+                    selectedIndex = 0;
+                }
+
+                var selectedBox = imageSliderPanel.Controls[selectedIndex] as PictureBox;
+                selectedBox.BorderStyle = BorderStyle.FixedSingle;
+                displayBox.Image = selectedBox.Image;
+                renameBox.Text = selectedBox.Tag.ToString();
+            }
+            else 
+            {
+                animationTimer.Enabled = false;
+            }
+
+        }
+
+        private void radio60_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radio60.Checked)
+            {
+                animationTimer.Interval = 1000 / 60;
+            }
+            else 
+            {
+                animationTimer.Interval = 1000 / 30;
             }
         }
     }
