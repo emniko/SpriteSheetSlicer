@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BumpKit;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -280,23 +281,37 @@ namespace SpriteVortex
             {
                 string savePath = Path.GetDirectoryName(saveSpriteDialog.FileName);
 
-                for (int i = 0; i < imageSliderPanel.Controls.Count; i++)
+                if (saveSpriteDialog.FilterIndex == 2)
                 {
-                    if (saveSpriteDialog.FilterIndex == 1)
+                    using (var gif = File.OpenWrite(savePath + "\\" + fileName.Substring(0, fileName.IndexOf('.')) + ".gif"))
                     {
-                        displayBox.Image.Save(savePath + "\\" + fileName.Substring(0, fileName.IndexOf('.')) + "_" + (i + 1) + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
-                    }
-                    else if (saveSpriteDialog.FilterIndex == 2)
+                        var encoder = new GifEncoder(gif);                      
+                        for (int i = 0; i < imageSliderPanel.Controls.Count; i++)
+                        {
+                            var spriteBox = imageSliderPanel.Controls[i] as PictureBox;
+                            var frame = spriteBox.Image;
+                            encoder.AddFrame(frame);
+                        }
+                    }                                    
+                }
+                else 
+                {
+                    for (int i = 0; i < imageSliderPanel.Controls.Count; i++)
                     {
+                        var spriteBox = imageSliderPanel.Controls[i] as PictureBox;
 
-                    }
-                    else if (saveSpriteDialog.FilterIndex == 3)
-                    {
-                        displayBox.Image.Save(savePath + "\\" + fileName.Substring(0, fileName.IndexOf('.')) + "_" + (i + 1) + ".jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
-                    }
-                    else if (saveSpriteDialog.FilterIndex == 4)
-                    {
-                        displayBox.Image.Save(savePath + "\\" + fileName.Substring(0, fileName.IndexOf('.')) + "_" + (i + 1) + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                        if (saveSpriteDialog.FilterIndex == 1)
+                        {
+                            spriteBox.Image.Save(savePath + "\\" + fileName.Substring(0, fileName.IndexOf('.')) + "_" + (i + 1) + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                        }
+                        else if (saveSpriteDialog.FilterIndex == 3)
+                        {
+                            spriteBox.Image.Save(savePath + "\\" + fileName.Substring(0, fileName.IndexOf('.')) + "_" + (i + 1) + ".jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                        }
+                        else if (saveSpriteDialog.FilterIndex == 4)
+                        {
+                            spriteBox.Image.Save(savePath + "\\" + fileName.Substring(0, fileName.IndexOf('.')) + "_" + (i + 1) + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                        }
                     }
                 }
             }
