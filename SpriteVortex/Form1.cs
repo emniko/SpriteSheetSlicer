@@ -479,6 +479,7 @@ namespace SpriteVortex
                     if (image.GetPixel(x, y).A > 0)
                     {
                         fullTransparent = false;
+                        break;
                     }
                 }
             }
